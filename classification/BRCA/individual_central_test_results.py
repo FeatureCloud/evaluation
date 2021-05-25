@@ -19,11 +19,12 @@ def perform_individual_central_test_analysis_brca():
                 clients = []
                 for i in range(1, 11):
                     train = pd.read_csv(
-                        f"data/5-split-10-cv/{client}/data/split_{i}/train.csv")
+                        f"classification/BRCA/data/5-split-10-cv/{client}/data/split_{i}/train.csv")
                     tests = []
                     for participant in ["coordinator", "participant1", "participant2", "participant3", "participant4"]:
                         tests.append(
-                            pd.read_csv(f"data/5-split-10-cv/{participant}/data/split_{i}/test.csv"))
+                            pd.read_csv(
+                                f"classification/BRCA/data/5-split-10-cv/{participant}/data/split_{i}/test.csv"))
                     test = pd.concat(tests)
 
                     X_train = train.drop(datasets[key][1], axis=1)
@@ -54,4 +55,5 @@ def perform_individual_central_test_analysis_brca():
         df = pd.DataFrame(data)
         df = df.rename({"breast_cancer_Logistic Regression": "Logistic Regression (BRCA)",
                         "breast_cancer_Random Forests": "Random Forest (BRCA)"}, axis=1)
-        df.to_csv(f'individual_central_test_results/individual_central_test_results.csv', index=False)
+        df.to_csv(f'classification/BRCA/individual_central_test_results/individual_central_test_results.csv',
+                  index=False)

@@ -1,6 +1,5 @@
 import time
 
-import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 from sklearn.ensemble import RandomForestClassifier
@@ -44,20 +43,15 @@ def perform_centralized_analysis_ilpd():
         recs = []
         runs = []
 
-        # data = pd.read_csv(datasets[dataset_key][0])
-        # target = data.loc[:, datasets[dataset_key][1]]
-        # data = data.drop(datasets[dataset_key][1], axis=1)
         splits = []
         input_reading_runtime = []
 
         for i in range(1, 11):
-            print(i)
             start_time = time.time()
-            splits.append(pd.read_csv(f'data/10-cv-splits/split_{i}.csv'))
+            splits.append(pd.read_csv(f'classification/ILPD/data/10-cv-splits/split_{i}.csv'))
             input_reading_runtime.append(time.time() - start_time)
 
         for i in range(len(splits)):
-            print(i)
             start_time = time.time()
             test_split = splits[i]
             train_splits = [i for i in splits.copy() if not i.equals(test_split)]
@@ -93,13 +87,7 @@ def perform_centralized_analysis_ilpd():
             run = time.time() - start_time + input_reading_runtime[i]
             runs.append(run)
 
-        mean_runtime = round(np.mean(runs), 3)
-        std_runtime = round(np.std(runs), 3)
-
         score_df = create_eval_dataframe(accs, f1s, mccs, precs, recs, runs)
         plt = plot_boxplots(score_df, title=f'ILPD: {model}')
-        plt.show()
-        score_df.to_csv(f'centralized_results/{model}_sklearn.csv', index=False)
-        plt.write_image(f'centralized_results/{model}_sklearn.png')
-        plt.write_image(f'centralized_results/{model}_sklearn.svg')
-        plt.write_image(f'centralized_results/{model}_sklearn.pdf')
+        score_df.to_csv(f'classification/ILPD/centralized_results/{model}_sklearn.csv', index=False)
+        plt.write_image(f'classification/ILPD/centralized_results/{model}_sklearn.pdf')

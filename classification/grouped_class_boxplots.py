@@ -5,22 +5,22 @@ from plotly.subplots import make_subplots
 
 def perform_grouped_boxplot_analysis_classification():
     lr = pd.read_csv(
-        "ILPD/centralized_results/Logistic Regression_sklearn.csv")
+        "classification/ILPD/centralized_results/Logistic Regression_sklearn.csv")
     lr_fc = pd.read_csv(
-        "ILPD/fc_results/evaluation/logistic_regression/coordinator/cv_evaluation.csv")
+        "classification/ILPD/fc_results/evaluation/logistic_regression/coordinator/cv_evaluation.csv")
     rf_fc = pd.read_csv(
-        "ILPD/fc_results/evaluation/random_forest/coordinator/cv_evaluation.csv")
+        "classification/ILPD/fc_results/evaluation/random_forest/coordinator/cv_evaluation.csv")
     rf = pd.read_csv(
-        "ILPD/centralized_results/Random Forests_sklearn.csv")
+        "classification/ILPD/centralized_results/Random Forests_sklearn.csv")
 
     lr_brca = pd.read_csv(
-        "BRCA/centralized_results/Logistic Regression_sklearn.csv")
+        "classification/BRCA/centralized_results/Logistic Regression_sklearn.csv")
     lr_fc_brca = pd.read_csv(
-        "BRCA/fc_results/evaluation/logistic_regression/coordinator/cv_evaluation.csv")
+        "classification/BRCA/fc_results/evaluation/logistic_regression/coordinator/cv_evaluation.csv")
     rf_fc_brca = pd.read_csv(
-        "BRCA/fc_results/evaluation/random_forest/coordinator/cv_evaluation.csv")
+        "classification/BRCA/fc_results/evaluation/random_forest/coordinator/cv_evaluation.csv")
     rf_brca = pd.read_csv(
-        "BRCA/centralized_results/Random Forests_sklearn.csv")
+        "classification/BRCA/centralized_results/Random Forests_sklearn.csv")
 
     metric = "accuracy"
     fig = make_subplots(rows=1, cols=2, subplot_titles=("ILPD Dataset", "BRCA Dataset"))
@@ -31,8 +31,8 @@ def perform_grouped_boxplot_analysis_classification():
     fc = []
     single = []
     single_new = []
-    singles = pd.read_csv("ILPD/individual_local_test_results/individual_local_test_results.csv")
-    singles_new = pd.read_csv("ILPD/individual_central_test_results/individual_central_test_results.csv")
+    singles = pd.read_csv("classification/ILPD/individual_local_test_results/individual_local_test_results.csv")
+    singles_new = pd.read_csv("classification/ILPD/individual_central_test_results/individual_central_test_results.csv")
     for category in categories:
         for i in range(10):
             x.append(category)
@@ -49,7 +49,6 @@ def perform_grouped_boxplot_analysis_classification():
                 a = i - 5
                 single.append(singles.loc[a, category + " (ILPD)"])
                 single_new.append(singles_new.loc[a, category + " (ILPD)"])
-
 
     fig.add_trace(go.Box(
         y=sklearn,
@@ -91,8 +90,8 @@ def perform_grouped_boxplot_analysis_classification():
     fc = []
     single = []
     single_new = []
-    singles = pd.read_csv("BRCA/individual_local_test_results/individual_local_test_results.csv")
-    singles_new = pd.read_csv("BRCA/individual_central_test_results/individual_central_test_results.csv")
+    singles = pd.read_csv("classification/BRCA/individual_local_test_results/individual_local_test_results.csv")
+    singles_new = pd.read_csv("classification/BRCA/individual_central_test_results/individual_central_test_results.csv")
     for category in categories:
         for i in range(10):
             x.append(category)
@@ -158,4 +157,5 @@ def perform_grouped_boxplot_analysis_classification():
             x=0.5),
     )
 
-    fig.write_image("grouped_results_classification_analysis.pdf")
+    fig.write_image("grouped_boxplot_analysis_classification.pdf")
+    fig.write_image("grouped_boxplot_analysis_classification.png")

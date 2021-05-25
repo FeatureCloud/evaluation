@@ -51,7 +51,7 @@ def perform_centralized_analysis_boston():
         input_reading_runtime = []
         for i in range(1, 11):
             start_time = time.time()
-            splits.append(pd.read_csv(f'data/10-cv-splits/split_{i}.csv'))
+            splits.append(pd.read_csv(f'regression/boston/data/10-cv-splits/split_{i}.csv'))
             input_reading_runtime.append(time.time() - start_time)
 
         for i in range(len(splits)):
@@ -93,6 +93,5 @@ def perform_centralized_analysis_boston():
 
         score_df = create_eval_dataframe(maes, maxs, rmses, mses, medaes)
         plt = plot_boxplots(score_df, title=f'Boston: {model}')
-        score_df.to_csv(f'centralized_results/{model}_sklearn.csv', index=False)
-        plt.write_image(f'centralized_results/{model}_sklearn.pdf')
-        plt.show()
+        score_df.to_csv(f'regression/boston/centralized_results/{model}_sklearn.csv', index=False)
+        plt.write_image(f'regression/boston/centralized_results/{model}_sklearn.pdf')

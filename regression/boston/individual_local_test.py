@@ -5,6 +5,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import StandardScaler
 
+
 def perform_individual_local_test_analysis_boston():
     datasets = {"boston": ["boston", "label"]}
     models = ["Linear Regression", "Random Forests"]
@@ -18,9 +19,8 @@ def perform_individual_local_test_analysis_boston():
                 clients = []
                 for i in range(1, 11):
                     train = pd.read_csv(
-                        f"data/5-split-10-cv/{client}/data/split_{i}/train.csv")
-                    tests = []
-                    test = pd.read_csv(f"data/5-split-10-cv/{client}/data/split_{i}/test.csv")
+                        f"regression/boston/data/5-split-10-cv/{client}/data/split_{i}/train.csv")
+                    test = pd.read_csv(f"regression/boston/data/5-split-10-cv/{client}/data/split_{i}/test.csv")
                     X_train = train.drop(datasets[key][1], axis=1)
                     y_train = train.loc[:, datasets[key][1]]
 
@@ -45,8 +45,8 @@ def perform_individual_local_test_analysis_boston():
                 split_averages.append(np.mean(clients))
             data[key + "_" + model] = split_averages
 
-        df = pd.DataFrame(data)
-        df = df.rename({"boston_Linear Regression": "Linear Regression (boston)",
-                        "boston_Random Forests": "Random Forest (boston)"}, axis=1)
+    df = pd.DataFrame(data)
+    df = df.rename({"boston_Linear Regression": "Linear Regression (boston)",
+                    "boston_Random Forests": "Random Forest (boston)"}, axis=1)
 
-        df.to_csv("individual_local_test_results/individual_local_test_results.csv", index=False)
+    df.to_csv("regression/boston/individual_local_test_results/individual_local_test_results.csv", index=False)

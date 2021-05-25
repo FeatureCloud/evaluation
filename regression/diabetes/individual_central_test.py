@@ -17,12 +17,11 @@ def perform_individual_central_test_analysis_diabetes():
             for client in ["coordinator", "participant1", "participant2", "participant3", "participant4"]:
                 clients = []
                 for i in range(1, 11):
-                    train = pd.read_csv(
-                        f"data/5-split-10-cv/{client}/data/split_{i}/train.csv")
+                    train = pd.read_csv(f"regression/diabetes/data/5-split-10-cv/{client}/data/split_{i}/train.csv")
                     tests = []
                     for participant in ["coordinator", "participant1", "participant2", "participant3", "participant4"]:
                         tests.append(
-                            pd.read_csv(f"data/5-split-10-cv/{participant}/data/split_{i}/test.csv"))
+                            pd.read_csv(f"regression/diabetes/data/5-split-10-cv/{participant}/data/split_{i}/test.csv"))
                     test = pd.concat(tests)
                     X_train = train.drop(datasets[key][1], axis=1)
                     y_train = train.loc[:, datasets[key][1]]
@@ -48,8 +47,8 @@ def perform_individual_central_test_analysis_diabetes():
                 split_averages.append(np.mean(clients))
             data[key + "_" + model] = split_averages
 
-        df = pd.DataFrame(data)
-        df = df.rename({"diabetes_Linear Regression": "Linear Regression (diabetes)",
-                        "diabetes_Random Forests": "Random Forest (diabetes)"}, axis=1)
+    df = pd.DataFrame(data)
+    df = df.rename({"diabetes_Linear Regression": "Linear Regression (diabetes)",
+                    "diabetes_Random Forests": "Random Forest (diabetes)"}, axis=1)
 
-        df.to_csv("individual_local_test_results/individual_local_test_results.csv", index=False)
+    df.to_csv("regression/diabetes/individual_central_test_results/individual_central_test_results.csv", index=False)

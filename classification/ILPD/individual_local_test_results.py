@@ -5,6 +5,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler
 
+
 def perform_individual_local_test_analysis_ilpd():
     datasets = {"ILPD": ["ilpd", "y"]}
     models = ["Logistic Regression", "Random Forests"]
@@ -18,8 +19,8 @@ def perform_individual_local_test_analysis_ilpd():
                 clients = []
                 for i in range(1, 11):
                     train = pd.read_csv(
-                        f"data/5-split-10-cv/{client}/data/split_{i}/train.csv")
-                    test = pd.read_csv(f"data/5-split-10-cv/{client}/data/split_{i}/test.csv")
+                        f"classification/ILPD/data/5-split-10-cv/{client}/data/split_{i}/train.csv")
+                    test = pd.read_csv(f"classification/ILPD/data/5-split-10-cv/{client}/data/split_{i}/test.csv")
 
                     X_train = train.drop(datasets[key][1], axis=1)
                     y_train = train.loc[:, datasets[key][1]]
@@ -36,7 +37,8 @@ def perform_individual_local_test_analysis_ilpd():
                     if model == "Random Forests":
                         clf = RandomForestClassifier(n_estimators=100, random_state=random_state)
                     elif model == "Logistic Regression":
-                        clf = LogisticRegression(penalty="none", solver='lbfgs', C=1e9, max_iter=10000, fit_intercept=True)
+                        clf = LogisticRegression(penalty="none", solver='lbfgs', C=1e9, max_iter=10000,
+                                                 fit_intercept=True)
                     clf.fit(X_train, y_train)
                     y_pred = clf.predict(X_test)
 
@@ -49,4 +51,4 @@ def perform_individual_local_test_analysis_ilpd():
         df = df.rename({"ILPD_Logistic Regression": "Logistic Regression (ILPD)",
                         "ILPD_Random Forests": "Random Forest (ILPD)"}, axis=1)
         df.to_csv(
-            f'individual_local_test_results/individual_local_test_results.csv', index=False)
+            f'classification/ILPD/individual_local_test_results/individual_local_test_results.csv', index=False)

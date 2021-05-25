@@ -5,22 +5,22 @@ from plotly.subplots import make_subplots
 
 def perform_grouped_boxplot_analysis_regression():
     lr = pd.read_csv(
-        "diabetes/centralized_results/Linear Regression_sklearn.csv")
+        "regression/diabetes/centralized_results/Linear Regression_sklearn.csv")
     lr_fc = pd.read_csv(
-        "diabetes/fc_results/evaluation/linear_regression/coordinator/cv_evaluation.csv")
+        "regression/diabetes/fc_results/evaluation/linear_regression/coordinator/cv_evaluation.csv")
     rf_fc = pd.read_csv(
-        "diabetes/fc_results/evaluation/random_forest/coordinator/cv_evaluation.csv")
+        "regression/diabetes/fc_results/evaluation/random_forest/coordinator/cv_evaluation.csv")
     rf = pd.read_csv(
-        "diabetes/centralized_results/Random Forests_sklearn.csv")
+        "regression/diabetes/centralized_results/Random Forests_sklearn.csv")
 
     lr_boston = pd.read_csv(
-        "boston/centralized_results/Linear Regression_sklearn.csv")
+        "regression/boston/centralized_results/Linear Regression_sklearn.csv")
     lr_fc_boston = pd.read_csv(
-        "boston/fc_results/evaluation/linear_regression/coordinator/cv_evaluation.csv")
+        "regression/boston/fc_results/evaluation/linear_regression/coordinator/cv_evaluation.csv")
     rf_fc_boston = pd.read_csv(
-        "boston/fc_results/evaluation/random_forest/coordinator/cv_evaluation.csv")
+        "regression/boston/fc_results/evaluation/random_forest/coordinator/cv_evaluation.csv")
     rf_boston = pd.read_csv(
-        "boston/centralized_results/Random Forests_sklearn.csv")
+        "regression/boston/centralized_results/Random Forests_sklearn.csv")
 
     fig = make_subplots(rows=1, cols=2, subplot_titles=("Diabetes Dataset", "Boston Dataset"))
     metric = "root_mean_squared_error"
@@ -31,8 +31,8 @@ def perform_grouped_boxplot_analysis_regression():
     fc = []
     single = []
     single_new = []
-    singles = pd.read_csv("diabetes/individual_local_test_results/individual_local_test_results.csv")
-    singles_new = pd.read_csv("diabetes/individual_central_test_results/individual_central_test_results.csv")
+    singles = pd.read_csv("regression/diabetes/individual_local_test_results/individual_local_test_results.csv")
+    singles_new = pd.read_csv("regression/diabetes/individual_central_test_results/individual_central_test_results.csv")
     for category in categories:
         for i in range(10):
             x.append(category)
@@ -91,8 +91,8 @@ def perform_grouped_boxplot_analysis_regression():
     fc = []
     single = []
     single_new = []
-    singles = pd.read_csv("boston/individual_local_test_results/individual_local_test_results.csv")
-    singles_new = pd.read_csv("boston/individual_central_test_results/individual_central_test_results.csv")
+    singles = pd.read_csv("regression/boston/individual_local_test_results/individual_local_test_results.csv")
+    singles_new = pd.read_csv("regression/boston/individual_central_test_results/individual_central_test_results.csv")
     for category in categories:
         for i in range(10):
             x.append(category)
@@ -146,9 +146,7 @@ def perform_grouped_boxplot_analysis_regression():
         showlegend=False
     ), row=1, col=2)
 
-
     fig.update_yaxes(range=[0, 20], row=1, col=2)
-
 
     fig.update_layout(
         yaxis_title=metric.replace("_", " ").capitalize(),
@@ -162,4 +160,6 @@ def perform_grouped_boxplot_analysis_regression():
             x=0.5),
     )
 
-    fig.write_image("../grouped_results_regression_analysis.pdf")
+    fig.write_image("grouped_boxplot_analysis_regression.pdf")
+    fig.write_image("grouped_boxplot_analysis_regression.svg")
+    fig.write_image("grouped_boxplot_analysis_regression.png")
