@@ -9,50 +9,47 @@ from sklearn.metrics import accuracy_score, f1_score, matthews_corrcoef, precisi
 from sklearn.preprocessing import StandardScaler
 
 
-def create_eval_dataframe(accs, f1s, mccs, precs, recs, runs):
-    scores = [accs, f1s, mccs, precs, recs, runs]
-    cols = ["accuracy", "f1-score", "mcc", "precision", "recall", "runtime"]
+def perform_centralized_analysis_ilpd():
+    def create_eval_dataframe(accs, f1s, mccs, precs, recs, runs):
+        scores = [accs, f1s, mccs, precs, recs, runs]
+        cols = ["accuracy", "f1-score", "mcc", "precision", "recall", "runtime"]
 
-    df = pd.DataFrame(data=scores).transpose()
-    df.columns = cols
+        df = pd.DataFrame(data=scores).transpose()
+        df.columns = cols
 
-    return df
+        return df
 
+    def plot_boxplots(df, title):
+        fig = go.Figure()
+        fig.add_trace(go.Box(y=df["accuracy"], quartilemethod="linear", name="Accuracy"))
+        fig.add_trace(go.Box(y=df["precision"], quartilemethod="linear", name="Precision"))
+        fig.add_trace(go.Box(y=df["recall"], quartilemethod="linear", name="Recall"))
+        fig.add_trace(go.Box(y=df["f1-score"], quartilemethod="linear", name="f1-score"))
+        fig.add_trace(go.Box(y=df["mcc"], quartilemethod="linear", name="MCC"))
+        fig.update_layout(title=title)
+        fig.update_yaxes(range=[0.5, 1])
 
-def plot_boxplots(df, title):
-    fig = go.Figure()
-    fig.add_trace(go.Box(y=df["accuracy"], quartilemethod="linear", name="Accuracy"))
-    fig.add_trace(go.Box(y=df["precision"], quartilemethod="linear", name="Precision"))
-    fig.add_trace(go.Box(y=df["recall"], quartilemethod="linear", name="Recall"))
-    fig.add_trace(go.Box(y=df["f1-score"], quartilemethod="linear", name="f1-score"))
-    fig.add_trace(go.Box(y=df["mcc"], quartilemethod="linear", name="MCC"))
-    fig.update_layout(title=title)
-    fig.update_yaxes(range=[0.5, 1])
+        return fig
 
-    return fig
+    models = ["Logistic Regression", "Random Forests"]
 
+    random_state = 42
+    label_col = "y"
 
-models = ["Logistic Regression", "Random Forests"]
+    for model in models:
+        accs = []
+        f1s = []
+        mccs = []
+        precs = []
+        recs = []
+        runs = []
 
+        # data = pd.read_csv(datasets[dataset_key][0])
+        # target = data.loc[:, datasets[dataset_key][1]]
+        # data = data.drop(datasets[dataset_key][1], axis=1)
+        splits = []
+        input_reading_runtime = []
 
-random_state = 42
-label_col = "y"
-
-
-for model in models:
-    accs = []
-    f1s = []
-    mccs = []
-    precs = []
-    recs = []
-    runs = []
-
-    # data = pd.read_csv(datasets[dataset_key][0])
-    # target = data.loc[:, datasets[dataset_key][1]]
-    # data = data.drop(datasets[dataset_key][1], axis=1)
-    splits = []
-    input_reading_runtime = []
-    if True:
         for i in range(1, 11):
             print(i)
             start_time = time.time()
@@ -100,7 +97,9 @@ for model in models:
         std_runtime = round(np.std(runs), 3)
 
         score_df = create_eval_dataframe(accs, f1s, mccs, precs, recs, runs)
-        plt = plot_boxplots(score_df, title=f'Breast Cancer: {model}')
+        plt = plot_boxplots(score_df, title=f'ILPD: {model}')
         plt.show()
         score_df.to_csv(f'centralized_results/{model}_sklearn.csv', index=False)
+        plt.write_image(f'centralized_results/{model}_sklearn.png')
+        plt.write_image(f'centralized_results/{model}_sklearn.svg')
         plt.write_image(f'centralized_results/{model}_sklearn.pdf')
