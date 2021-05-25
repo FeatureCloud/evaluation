@@ -1,0 +1,6 @@
+metric,score
+mean_absolut_error,28.941500000000005
+max_error,41.02600000000001
+root_mean_squared_error,31.60046808197626
+mean_squared_error,998.5895830000003
+median_absolut_error,33.283

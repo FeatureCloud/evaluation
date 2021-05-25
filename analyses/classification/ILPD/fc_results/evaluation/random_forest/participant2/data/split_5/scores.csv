@@ -1,0 +1,8 @@
+metric,score
+sensitivity,1.0
+specificity,0.1
+accuracy,0.6896551724137931
+precision,0.6785714285714286
+recall,1.0
+f1_score,0.8085106382978724
+mcc,0.2604940361258638
