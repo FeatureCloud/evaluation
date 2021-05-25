@@ -18,11 +18,7 @@ for key in datasets:
             for i in range(1, 11):
                 train = pd.read_csv(
                     f"data/5-split-10-cv/{client}/data/split_{i}/train.csv")
-                tests = []
-                for participant in ["coordinator", "participant1", "participant2", "participant3", "participant4"]:
-                    tests.append(
-                        pd.read_csv(f"data/5-split-10-cv/{participant}/data/split_{i}/test.csv"))
-                test = pd.concat(tests)
+                test = pd.read_csv(f"data/5-split-10-cv/{client}/data/split_{i}/test.csv")
                 X_train = train.drop(datasets[key][1], axis=1)
                 y_train = train.loc[:, datasets[key][1]]
 
