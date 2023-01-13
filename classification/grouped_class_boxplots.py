@@ -22,7 +22,7 @@ def perform_grouped_boxplot_analysis_classification():
     rf_brca = pd.read_csv(
         "classification/BRCA/centralized_results/Random Forests_sklearn.csv")
 
-    metric = "accuracy"
+    metric = "f1-score"
     fig = make_subplots(rows=1, cols=2, subplot_titles=("ILPD Dataset", "BRCA Dataset"))
 
     categories = ["Logistic Regression", "Random Forest"]
@@ -155,7 +155,11 @@ def perform_grouped_boxplot_analysis_classification():
             y=-0.1,
             xanchor="center",
             x=0.5),
+        height=500,
+        width=1000,
+
     )
 
-    fig.write_image("grouped_boxplot_analysis_classification.pdf")
-    fig.write_image("grouped_boxplot_analysis_classification.png")
+    fig.write_image("figures/grouped_boxplot_analysis_classification.pdf")
+    fig.write_image("figures/grouped_boxplot_analysis_classification.png")
+    fig.write_image("figures/grouped_boxplot_analysis_classification.svg")

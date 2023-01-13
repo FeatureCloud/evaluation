@@ -1,0 +1,34 @@
+fc_random_forest:
+  input:
+    train: "train.csv"
+    test: "test.csv"
+  output:
+    pred: "pred.csv"
+    proba: "proba.csv"
+    test: "test.csv"
+  format:
+    sep: ","
+    label: "y"
+  split:
+    mode: "file"
+    dir: .
+  estimators: 100
+  mode: classification
+  random_state: 42
+
+fc_logistic_regression:
+  input:
+    train: "train.csv"
+    test: "test.csv"
+  output:
+    pred: "pred.csv"
+    proba: "proba.csv"
+    test: "test.csv"
+  format:
+    sep: ","
+    label: "y"
+  split:
+    mode: "file"
+    dir: .
+  algo:
+    max_iterations: 1

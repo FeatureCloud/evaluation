@@ -22,7 +22,7 @@ def perform_grouped_boxplot_analysis_regression():
     rf_boston = pd.read_csv(
         "regression/boston/centralized_results/Random Forests_sklearn.csv")
 
-    fig = make_subplots(rows=1, cols=2, subplot_titles=("Diabetes Dataset", "Boston Dataset"))
+    fig = make_subplots(rows=1, cols=3, subplot_titles=("Diabetes Dataset", "Boston Dataset", "SHARE Dataset"))
     metric = "root_mean_squared_error"
 
     categories = ["Linear Regression", "Random Forest"]
@@ -83,7 +83,6 @@ def perform_grouped_boxplot_analysis_regression():
         offsetgroup="D",
         showlegend=True
     ), row=1, col=1)
-
 
     categories = ["Linear Regression", "Random Forest"]
     x = []
@@ -146,6 +145,58 @@ def perform_grouped_boxplot_analysis_regression():
         showlegend=False
     ), row=1, col=2)
 
+    categories = ["Deep Learning (300 epochs)"]
+    x = []
+    sklearn = []
+    fc = []
+    single_new = []
+    single = []
+    dl_results = pd.read_excel("regression/deep_learning/dl_results.xlsx", index_col=[0, 1])
+
+    for category in categories:
+        for i in range(5):
+            x.append(category)
+            sklearn.append(dl_results.loc[('Centralized', 0), "root_mean_squared_error"])
+            fc.append(dl_results.loc[('Federated', 0), "root_mean_squared_error"])
+            single_new.append(dl_results.loc[('Individual (Central Test Data)', i), "root_mean_squared_error"])
+            single.append(dl_results.loc[('Individual (Local Test Data)', i), "root_mean_squared_error"])
+
+    fig.add_trace(go.Box(
+        y=sklearn,
+        x=x,
+        name='Centralized',
+        marker_color='#F89A36',
+        offsetgroup="A",
+        showlegend=False
+    ), row=1, col=3)
+
+    fig.add_trace(go.Box(
+        y=fc,
+        x=x,
+        name='Federated',
+        marker_color='#19B7DF',
+        offsetgroup="B",
+        showlegend=False
+    ), row=1, col=3)
+
+    fig.add_trace(go.Box(
+        y=single_new,
+        x=x,
+        name='Individual (Central Test Data)',
+        marker_color='#65737e',
+        offsetgroup="C",
+        showlegend=False
+    ), row=1, col=3)
+
+    fig.add_trace(go.Box(
+        y=single,
+        x=x,
+        name='Individual (Local Test Data)',
+        marker_color='#a9a9a9',
+        offsetgroup="D",
+        showlegend=False
+    ), row=1, col=3)
+
     fig.update_yaxes(range=[0, 20], row=1, col=2)
 
     fig.update_layout(
@@ -158,8 +209,10 @@ def perform_grouped_boxplot_analysis_regression():
             y=-0.1,
             xanchor="center",
             x=0.5),
+        height=500,
+        width=1000,
     )
 
-    fig.write_image("grouped_boxplot_analysis_regression.pdf")
-    fig.write_image("grouped_boxplot_analysis_regression.svg")
-    fig.write_image("grouped_boxplot_analysis_regression.png")
+    fig.write_image("figures/grouped_boxplot_analysis_regression.pdf")
+    fig.write_image("figures/grouped_boxplot_analysis_regression.svg")
+    fig.write_image("figures/grouped_boxplot_analysis_regression.png")
